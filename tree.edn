@@ -1,23 +1,14 @@
-{:tag :root,
- :content
-      ({:tag :object_name, :content ("User")}
-        {:tag :object_id, :content ("234234")}
-        {:tag :object,
-         :content
-              ({:tag :field_list,
-                :content
-                     ({:tag :field,
-                       :content
-                            ({:tag :field_name, :content ("one")}
-                              {:tag :object,
-                               :content
-                                    ({:tag :field_list,
-                                      :content
-                                           ({:tag :field,
-                                             :content ({:tag :field_name, :content ("sub1")})}
-                                             {:tag :field,
-                                              :content ({:tag :field_name, :content ("sub2")})})})})}
-                       {:tag :field, :content ({:tag :field_name, :content ("two")})}
-                       {:tag :field, :content ({:tag :field_name, :content ("three")})}
-                       {:tag :field,
-                        :content ({:tag :field_name, :content ("four")})})})})}
+[:root
+ [:object_name "User"]
+ [:object_id "234234"]
+ [:object
+  [:field_list
+   [:field
+    [:field_name "one"]
+    [:object
+     [:field_list
+      [:field [:field_name "sub1"]]
+      [:field [:field_name "sub2"]]]]]
+   [:field [:field_name "two"]]
+   [:field [:field_name "three"]]
+   [:field [:field_name "four"]]]]]
