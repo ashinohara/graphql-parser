@@ -59,4 +59,18 @@
         (recur (next loc) (conj results (create-datalog loc)))
         (recur (next loc) results)))))
 
+(defn object-name [z]
+  (second (node (-> z down right))))
+
 (walk-zip zp)
+
+(group-by vector? (walk-zip zp))
+
+(defn get-attributes [z]
+  (get (group-by vector? (walk-zip z)) false))
+
+(defn get-objects [z]
+  (get (group-by vector? (walk-zip z)) true))
+
+(defn get-metadata [z]
+  [(object-name z) (get-attributes z)])
