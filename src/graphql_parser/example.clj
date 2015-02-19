@@ -1,26 +1,15 @@
 (ns graphql-parser.example
   (:require [datomic.api :as d]
-            [graphql-parser.core :as core])
-  (:import (com.amazonaws.services.route53domains.model CountryCode)))
+            [graphql-parser.core :as core]
+            [graphql-parser.schema]))
 
 (def uri "datomic:sql://mbrainz?jdbc:postgresql://localhost:5432/datomic?user=datomic")
 
-(def Country
-  {:name [:country/name String]})
-
-(def Artist
-  {:gid [:artist/gid String]
-   :name [:artist/name String]
-   :sortName [:artist/sortName String]
-   :type [:artist/type String]
-   :gender [:artist/gender String]
-   :country [:artist/country Country]
-   :startYear [:artist/startYear String]})
-
-
+(defn resolve-schema-class [class]
+  (var-get (ns-resolve 'graphql-parser.schema (symbol class))))
 
 (defn ql->pull [root attributes]
-  (let [metadata (eval (symbol root))
+  (let [metadata (resolve-schema-class root)
         schema (select-keys metadata (map keyword attributes))
         attrs (map #(-> % val first) schema)]
     attrs))
@@ -43,7 +32,7 @@
   (if (:relations metadata)
     (let [relation (first (:relations metadata))
           base-attr (keyword (first relation))
-          attr-meta (get (eval (symbol (:base-class metadata))) base-attr)
+          attr-meta (get (resolve-schema-class (:base-class metadata)) base-attr)
           relation-attr (keyword (second relation))
           relation-name (first attr-meta)
           relation-class (second attr-meta)
